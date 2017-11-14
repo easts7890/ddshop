@@ -3,9 +3,12 @@ package com.ymd.ddshop.service.impl;
 import com.ymd.ddshop.common.dto.Order;
 import com.ymd.ddshop.common.dto.Page;
 import com.ymd.ddshop.common.dto.Result;
+import com.ymd.ddshop.common.util.IDUtils;
 import com.ymd.ddshop.dao.TbItemCustomMapper;
+import com.ymd.ddshop.dao.TbItemDescMapper;
 import com.ymd.ddshop.dao.TbItemMapper;
 import com.ymd.ddshop.pojo.po.TbItem;
+import com.ymd.ddshop.pojo.po.TbItemDesc;
 import com.ymd.ddshop.pojo.po.TbItemExample;
 import com.ymd.ddshop.pojo.vo.TbItemCustom;
 import com.ymd.ddshop.pojo.vo.TbItemQuery;
@@ -14,7 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +34,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private TbItemCustomMapper itemCustomDao;
+
+    @Autowired
+    private TbItemDescMapper itemDescMapper;
 
     @Override
     public TbItem getById(Long itemId) {
@@ -84,6 +92,36 @@ public class ItemServiceImpl implements ItemService {
             criteria.andIdIn(ids);
 
              i = itemDao.updateByExampleSelective(record, example);
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+    @Transactional
+    @Override
+    public int saveItem(TbItem tbItem, String content) {
+
+        int i =0;
+        try {
+            //tb_iteme
+            long itemId = IDUtils.getItemId();
+            tbItem.setId(itemId);
+            tbItem.setStatus((byte)2);
+            tbItem.setCreated(new Date());
+            tbItem.setUpdated(new Date());
+
+            i = itemDao.insert(tbItem);
+
+            //tb_item_desc
+            TbItemDesc desc =new TbItemDesc();
+            desc.setItemId(itemId);
+            desc.setItemDesc(content);
+            desc.setCreated(new Date());
+            desc.setUpdated(new Date());
+
+            i+= itemDescMapper.insert(desc);
         }catch (Exception e){
             logger.error(e.getMessage(),e);
             e.printStackTrace();

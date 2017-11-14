@@ -1,5 +1,6 @@
 package com.ymd.ddshop.web;
 
+import com.ctc.wstx.sw.EncodingXmlWriter;
 import com.ymd.ddshop.common.dto.Order;
 import com.ymd.ddshop.common.dto.Page;
 import com.ymd.ddshop.common.dto.Result;
@@ -68,6 +69,19 @@ public class ItemAction {
         int i = 0;
         try {
             i=itemService.updateBatch(ids);
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            e.printStackTrace();
+        }
+        return i;
+    }
+
+    @ResponseBody
+    @RequestMapping("/item")
+    public int saveItem(TbItem tbItem,String content){
+        int i = 0;
+        try {
+            i = itemService.saveItem(tbItem,content);
         }catch (Exception e){
             logger.error(e.getMessage(),e);
             e.printStackTrace();

@@ -24,7 +24,7 @@
                 </td>
             </tr>
             <tr>
-                <td class="label">商品价格：</td>
+                <td class="label">商品价格(元)：</td>
                 <td>
                     <input class="easyui-numberbox" type="text" id="priceView" name="priceView"
                            data-options="required:true,min:0,precision:2">
@@ -75,6 +75,30 @@
 </div>
 
 <script>
+    function submitForm(){
+        $('#itemAddForm').form('submit',{
+            //提交表单到item进行处理
+            url: 'item',
+            //在表单提交之前触发
+            onSubmit:function () {
+                //将表单上价格单位从元转为分
+                $('#price').val($('#priceView').val()*100);
+                //做表单校验，表单上所有字段全部校验通过才能返回true，才会提交表单，
+                //如果有任意一个字段没有校验通过，返回false，不会提交表单
+                return $(this).form('validate');
+            },
+            //后台处理成功之后的回调函数
+            success:function(data){
+                if(data > 0) {
+                    $.messager.alert('温馨提示','添加商品成功！');
+                    $('#tab').tabs('close', '新增商品');
+                    ddshop.addTabs('查询商品', 'item-list');
+                }
+            }
+        });
+    }
+    //实例化富文本
+    var ue = UE.getEditor('container');
     //加载商品类目的树形下拉框
     $('#cid').combotree({
         url: 'itemCats?parentId=0',

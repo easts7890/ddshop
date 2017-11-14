@@ -25,6 +25,7 @@ var ddshop = {
                 href: href,
                 closable: true
             });
+
         }
     }
 
