@@ -20,5 +20,11 @@ public class TbUserMapperTest {
         TbUser tbUser = userDao.selectByPrimaryKey(5L);
         System.out.println(tbUser);
     }
+    
+    @Test
+    public void textString(){
+        String name = "123.jpg";
+        System.out.print(name.substring(name.lastIndexOf(".")));
+    }
 
 }

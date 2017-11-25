@@ -3,6 +3,9 @@ package com.ymd.ddshop.service.impl;
 import com.ymd.ddshop.common.dto.Page;
 import com.ymd.ddshop.common.dto.Result;
 import com.ymd.ddshop.dao.TbItemParamCustomMapper;
+import com.ymd.ddshop.dao.TbItemParamMapper;
+import com.ymd.ddshop.pojo.po.TbItemParam;
+import com.ymd.ddshop.pojo.po.TbItemParamExample;
 import com.ymd.ddshop.pojo.vo.TbItemParamCustom;
 import com.ymd.ddshop.service.ItemParamService;
 import org.slf4j.Logger;
@@ -21,6 +24,9 @@ public class ItemParamServiceImpl implements ItemParamService {
 
     @Autowired
     private TbItemParamCustomMapper itemParamCustomDao;
+
+    @Autowired
+    private TbItemParamMapper itemParamDao;
 
     @Override
     public Result<TbItemParamCustom> listItemParamsByPage(Page page) {
@@ -42,5 +48,24 @@ public class ItemParamServiceImpl implements ItemParamService {
         }
         return result;
 
+    }
+
+    @Override
+    public TbItemParam getItemParamByid(Long cid) {
+        TbItemParam tbItemParam = null;
+        try {
+            TbItemParamExample example = new TbItemParamExample();
+            TbItemParamExample.Criteria criteria = example.createCriteria();
+            criteria.andItemCatIdEqualTo(cid);
+
+            List<TbItemParam> list = itemParamDao.selectByExampleWithBLOBs(example);
+            if(list !=null && list.size()>0){
+                tbItemParam = list.get(0);
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage(),e);
+            e.printStackTrace();
+        }
+        return tbItemParam;
     }
 }

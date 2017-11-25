@@ -78,7 +78,7 @@
     function submitForm(){
         $('#itemAddForm').form('submit',{
             //提交表单到item进行处理
-            url: 'item',
+            url:'item',
             //在表单提交之前触发
             onSubmit:function () {
                 //将表单上价格单位从元转为分
@@ -97,8 +97,14 @@
             }
         });
     }
+
+    UE.delEditor('container');
     //实例化富文本
-    var ue = UE.getEditor('container');
+    var ue = UE.getEditor('container',{
+        initialFrameWidth: '100%',
+        initialFrameHeight: '300',
+        serverUrl:'file/upload'
+    });
     //加载商品类目的树形下拉框
     $('#cid').combotree({
         url: 'itemCats?parentId=0',
@@ -118,6 +124,53 @@
             if (!isLeaf) {
                 $.messager.alert('警告', '请选中最终的类别！', 'warning');
                 return false;
+            }else{
+                debugger;
+               // console.log(node);
+                //如果是叶子节点就发送ajax请求，请求查询tb_item_param
+                $.get(
+                    //url
+                    'itemParam/query/'+node.id
+                    ,
+                    //success
+                    function(data){
+                        //console.log(typeof(data));
+                        var $outerTd = $('#itemAddForm .paramsShow td').eq(1);
+                        var $ul = $('<ul>');
+                        $outerTd.empty().append($ul);
+                        if (data) {
+                            var paramData = data.paramData;
+                            paramData = JSON.parse(paramData);
+                            //遍历分组
+                            $.each(paramData, function (i, e) {
+                                var groupName = e.group;
+                                var $li = $('<li>');
+                                var $table = $('<table>');
+                                var $tr = $('<tr>');
+                                var $td = $('<td colspan="2" class="group">' + groupName + '</td>');
+
+                                $ul.append($li);
+                                $li.append($table);
+                                $table.append($tr);
+                                $tr.append($td);
+
+                                //遍历分组项
+                                if (e.params) {
+                                    $.each(e.params, function (_i, paramName) {
+                                        var _$tr = $('<tr><td class="param">' + paramName + '</td><td><input></td></tr>');
+                                        $table.append(_$tr);
+                                    });
+                                }
+                            });
+
+                            $("#itemAddForm .paramsShow").show();
+                        } else {
+
+                            $("#itemAddForm .paramsShow").hide();
+                            $("#itemAddForm .paramsShow td").eq(1).empty();//第二个td
+                        }
+                    }
+                );
             }
 
         }

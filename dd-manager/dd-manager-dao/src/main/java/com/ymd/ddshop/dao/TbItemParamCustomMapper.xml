@@ -6,7 +6,7 @@
   </sql>
 
   <sql id="Blob_Column_List">
-    p.param_data
+    p.param_data as paramData
   </sql>
 
   <select id="countItemParams" resultType="_int">

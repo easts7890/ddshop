@@ -10,6 +10,10 @@
     <modules>
         <module>../dd-common</module>
         <module>../dd-manager</module>
+        <module>../dd-upload</module>
+        <module>../dd-portal-web</module>
+        <module>../dd-lucene</module>
+        <module>../dd-search-web</module>
     </modules>
 
     <packaging>pom</packaging>
