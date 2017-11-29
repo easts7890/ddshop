@@ -75,23 +75,52 @@
 </div>
 
 <script>
-    function submitForm(){
-        $('#itemAddForm').form('submit',{
+    function submitForm() {
+        $('#itemAddForm').form('submit', {
             //提交表单到item进行处理
-            url:'item',
+            url: 'item',
             //在表单提交之前触发
-            onSubmit:function () {
+            onSubmit: function () {
                 //将表单上价格单位从元转为分
-                $('#price').val($('#priceView').val()*100);
+                $('#price').val($('#priceView').val() * 100);
+                //获取参数规格部分
+                var paramsJson = [];
+                var $liList = $('#itemAddForm .paramsShow li');
+                $liList.each(function (i, e) {
+                    $group = $(e).find('.group');
+                    var groupName = $group.text();
+
+                    var params = [];
+                    var $trParams = $(e).find('tr').has('td.param');
+                    $trParams.each(function (_i, _e) {
+                        var $oneDataTr = $(_e);
+                        var $keyTd = $oneDataTr.find('.param');
+                        var $valueInput = $keyTd.next('td').find('input');
+                        var key = $keyTd.text();
+                        var value = $valueInput.val();
+
+                        var _o = {
+                            k: key,
+                            v: value
+                        };
+                        params.push(_o);
+                    });
+                    var o = {};
+                    o.group = groupName;
+                    o.params = params;
+                    paramsJson.push(o);
+                });
+                paramsJson = JSON.stringify(paramsJson);
+                $('#paramData').val(paramsJson);
                 //做表单校验，表单上所有字段全部校验通过才能返回true，才会提交表单，
                 //如果有任意一个字段没有校验通过，返回false，不会提交表单
                 return $(this).form('validate');
             },
-            //后台处理成功之后的回调函数
-            success:function(data){
-                if(data > 0) {
-                    $.messager.alert('温馨提示','添加商品成功！');
-                    $('#tab').tabs('close', '新增商品');
+            //在表单提交成功以后触发
+            success: function (data) {
+                if (data > 0) {
+                    $.messager.alert('温馨提示', '恭喜！添加商品成功！');
+                    ddshop.closeTabs('新增商品');
                     ddshop.addTabs('查询商品', 'item-list');
                 }
             }

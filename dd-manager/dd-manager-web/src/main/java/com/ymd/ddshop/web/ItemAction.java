@@ -1,6 +1,6 @@
 package com.ymd.ddshop.web;
 
-import com.ctc.wstx.sw.EncodingXmlWriter;
+import com.ymd.ddshop.common.dto.MessageResult;
 import com.ymd.ddshop.common.dto.Order;
 import com.ymd.ddshop.common.dto.Page;
 import com.ymd.ddshop.common.dto.Result;
@@ -12,9 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import javax.jms.*;
 import java.util.List;
 
 @Controller
@@ -25,6 +29,11 @@ public class ItemAction {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private JmsTemplate jmsTemplate;
+
+    @Resource
+    private Destination topicDestination;
     @ResponseBody
     @RequestMapping(value = "/item/{itemId}",method = RequestMethod.GET)
     public TbItem getById(@PathVariable("itemId") long itemId){
@@ -78,15 +87,26 @@ public class ItemAction {
 
     @ResponseBody
     @RequestMapping("/item")
-    public int saveItem(TbItem tbItem,String content,String paramData){
-        int i = 0;
+    public MessageResult saveItem(TbItem tbItem, String content, String paramData){
+        MessageResult messageResult = new MessageResult();
         try {
-            i = itemService.saveItem(tbItem,content,paramData);
+            final Long itemId = itemService.saveItem(tbItem,content,paramData);
+
+            jmsTemplate.send(topicDestination, new MessageCreator() {
+                @Override
+                public Message createMessage(Session session) throws JMSException {
+                    TextMessage textMessage = session.createTextMessage(itemId+"");
+                    return textMessage;
+                }
+            });
+
+            messageResult.setSuccess(true);
+            messageResult.setMessage("新增商品成功");
         }catch (Exception e){
             logger.error(e.getMessage(),e);
             e.printStackTrace();
         }
-        return i;
+        return messageResult;
     }
 }
 

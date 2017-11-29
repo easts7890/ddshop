@@ -18,5 +18,5 @@ public interface ItemService {
 
     int updateBatch(List<Long> ids);
 
-    int saveItem(TbItem tbItem, String content,String paramData);
+    Long saveItem(TbItem tbItem, String content,String paramData);
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/dd-activemq" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dd-common" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dd-lucene" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dd-manager" charset="UTF-8" />
@@ -11,6 +12,7 @@
     <file url="file://$PROJECT_DIR$/dd-manager/dd-manager-web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dd-portal-web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dd-search-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dd-sso-web" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/dd-upload" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ddparent" charset="UTF-8" />
   </component>

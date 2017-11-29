@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="dd-activemq" />
         <module name="dd-common" />
         <module name="dd-lucene" />
         <module name="dd-manager-dao" />
@@ -15,10 +16,12 @@
         <module name="dd-manager-web" />
         <module name="dd-portal-web" />
         <module name="dd-search-web" />
+        <module name="dd-sso-web" />
         <module name="dd-upload" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="dd-activemq" target="1.7" />
       <module name="dd-common" target="1.7" />
       <module name="dd-lucene" target="1.7" />
       <module name="dd-manager" target="1.7" />
@@ -29,6 +32,7 @@
       <module name="dd-manager-web" target="1.7" />
       <module name="dd-portal-web" target="1.7" />
       <module name="dd-search-web" target="1.7" />
+      <module name="dd-sso-web" target="1.7" />
       <module name="dd-upload" target="1.7" />
       <module name="ddparent" target="1.7" />
     </bytecodeTargetLevel>

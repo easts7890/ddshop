@@ -7,4 +7,5 @@ import java.util.List;
 public interface TbItemSearchCustomMapper {
     List<TbItemSearchCustom> listsearchItems();
 
+    TbItemSearchCustom getById(Long itemId);
 }

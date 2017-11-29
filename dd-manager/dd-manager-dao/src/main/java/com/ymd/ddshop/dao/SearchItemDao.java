@@ -20,7 +20,10 @@ public class SearchItemDao {
     @Autowired
     private SolrServer solrServer;
 
-    public TbSearchItemResult search(SolrQuery query)throws  Exception{
+    /**
+     *根据查询条件查询索引库
+     */
+    public TbSearchItemResult search(SolrQuery query) throws Exception {
         //根据query查询索引库
         QueryResponse queryResponse = solrServer.query(query);
         //取查询结果。

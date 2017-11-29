@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 public class SearchItemServiceImpl implements SearchItemService {
 
+
     @Autowired
     private TbItemSearchCustomMapper tbItemSearchCustomDao;
 
@@ -59,30 +60,39 @@ public class SearchItemServiceImpl implements SearchItemService {
     }
 
     @Override
-    public TbSearchItemResult search(String keyword, int page, int rows) {
-        SolrQuery solrQuery = new SolrQuery();
+    public TbSearchItemResult search(String keyword, int page, int rows)  {
+        TbSearchItemResult searchResult = new TbSearchItemResult();
+            //创建一个SolrQuery对象
+            SolrQuery query = new SolrQuery();
+            //设置查询条件
+            query.setQuery(keyword);
+            //设置分页条件
+            if (page <=0 ) page = 1;
+            query.setStart((page - 1) * rows);
+            query.setRows(rows);
+            //设置默认搜索域
+            query.set("df", "item_keywords");
+            //开启高亮显示
+            query.setHighlight(true);
+            query.addHighlightField("item_title");
+            query.setHighlightSimplePre("<em style=\"color:red\">");
+            query.setHighlightSimplePost("</em>");
+            //调用dao执行查询
+            try {
+                searchResult  = searchItemDao.search(query);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
 
-        solrQuery.setQuery(keyword);
-        if(page<=0){
-            page = 1;
-        }
-        solrQuery.setStart((page-1)*rows);
-        solrQuery.setRows(rows);
-        solrQuery.set("df","item_keywords");
-
-        solrQuery.setHighlight(true);
-        solrQuery.addHighlightField("item_title");
-        solrQuery.setHighlightSimplePost("</em>");
-        solrQuery.setHighlightSimplePre("<em style=\"color:red\">");
-
-        //调用dao执行查询
-        TbSearchItemResult searchResult = searchItemDao.search(solrQuery);
-        //计算总页数
-        long recordCount = searchResult.getRecordCount();
-        int totalPage = (int) (recordCount + rows - 1/ rows);
-
-        //添加到返回结果
-        searchResult.setTotalPages(totalPage);
-        return searchResult;
+            //计算总页数
+            long recordCount = searchResult.getRecordCount();
+            int totalPage = (int) (recordCount / rows);
+            if (recordCount % rows > 0){
+                totalPage ++;
+            }
+            //添加到返回结果
+            searchResult.setTotalPages(totalPage);
+            //返回结果
+            return searchResult;
     }
 }

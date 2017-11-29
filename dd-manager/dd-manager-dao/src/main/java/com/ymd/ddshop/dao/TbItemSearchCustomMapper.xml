@@ -16,4 +16,18 @@
     i.status = 1
     ORDER BY i.id DESC
   </select>
+
+  <select id="getById" parameterType="_long" resultType="com.ymd.ddshop.pojo.vo.TbItemSearchCustom">
+    SELECT
+    i.id,
+    i.title,
+    i.sell_point as sellPoint,
+    i.price,
+    i.image,
+    c.name as catName
+    from tb_item i LEFT JOIN tb_item_cat c
+    on i.cid = c.id
+    WHERE
+    i.id = #{itemId}
+  </select>
 </mapper>
