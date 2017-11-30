@@ -16,6 +16,8 @@
         <module>../dd-search-web</module>
         <module>../dd-activemq</module>
         <module>../dd-sso-web</module>
+        <module>../dd-freemarker</module>
+        <module>../dd-item-web</module>
     </modules>
 
     <packaging>pom</packaging>

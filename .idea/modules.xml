@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/dd-activemq/dd-activemq.iml" filepath="$PROJECT_DIR$/dd-activemq/dd-activemq.iml" />
       <module fileurl="file://$PROJECT_DIR$/dd-common/dd-common.iml" filepath="$PROJECT_DIR$/dd-common/dd-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dd-freemarker/dd-freemarker.iml" filepath="$PROJECT_DIR$/dd-freemarker/dd-freemarker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dd-item-web/dd-item-web.iml" filepath="$PROJECT_DIR$/dd-item-web/dd-item-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dd-item-web/dd-item-web1.iml" filepath="$PROJECT_DIR$/dd-item-web/dd-item-web1.iml" />
       <module fileurl="file://$PROJECT_DIR$/dd-lucene/dd-lucene.iml" filepath="$PROJECT_DIR$/dd-lucene/dd-lucene.iml" />
       <module fileurl="file://$PROJECT_DIR$/dd-manager/dd-manager.iml" filepath="$PROJECT_DIR$/dd-manager/dd-manager.iml" />
       <module fileurl="file://$PROJECT_DIR$/dd-manager/dd-manager-dao/dd-manager-dao.iml" filepath="$PROJECT_DIR$/dd-manager/dd-manager-dao/dd-manager-dao.iml" />
